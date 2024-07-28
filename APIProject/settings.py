@@ -52,9 +52,9 @@ CHANNEL_LAYERS = {
 
     },
 }
-
+'''
 LOGGING = {
-    'version': 1,
+   'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
@@ -73,7 +73,7 @@ LOGGING = {
         },
     },
 }
-
+'''
 
 
 ASGI_APPLICATION = 'APIProject.asgi.application'

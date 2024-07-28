@@ -79,11 +79,11 @@ celerybeat-schedule
 
 # mkdocs documentation
 /site
-
+/.idea
 # mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
+my_app/migrations/
 # Pyre type checker
 .pyre/
