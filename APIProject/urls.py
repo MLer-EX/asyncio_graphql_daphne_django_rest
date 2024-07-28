@@ -6,7 +6,7 @@ from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('my_app.urls')),
+    path('', include('my_app.urls')),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ]

@@ -30,8 +30,27 @@ class CreateItem(graphene.Mutation):
         return CreateItem(item=item)
 
 
+class UpdateItem(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        name = graphene.String()
+        description = graphene.String()
+
+    item = graphene.Field(ItemType)
+
+    def mutate(self, info, id, name=None, description=None):
+        item = Item.objects.get(pk=id)
+        if name:
+            item.name = name
+        if description:
+            item.description = description
+        item.save()
+        return UpdateItem(item=item)
+
+
 class Mutation(graphene.ObjectType):
     create_item = CreateItem.Field()
+    update_item = UpdateItem.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

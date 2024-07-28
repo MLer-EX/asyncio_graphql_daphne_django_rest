@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'django_filters',
     'oauth2_provider',
     'graphene_django',
+    'channels',
 ]
+
+ASGI_APPLICATION = 'APIProject.asgi.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
