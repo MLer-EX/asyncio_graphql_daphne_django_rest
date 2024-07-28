@@ -1,11 +1,13 @@
-# myapp/views.py
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Item
-from .serializers import ItemSerializer
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.apps import apps
 from .forms import LoginForm
+from .serializers import ItemSerializer
+
+
+Item = apps.get_model('my_app', 'Item')
 
 
 class ItemListCreate(generics.ListCreateAPIView):

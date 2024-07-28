@@ -1,7 +1,7 @@
-import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import Message
-from django.contrib.auth.models import User
+from django.apps import apps
+from asgiref.sync import sync_to_async
+import json
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -26,11 +26,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         recipient_username = text_data_json['recipient']
-        recipient = User.objects.get(username=recipient_username)
+        User = apps.get_model('auth', 'User')
+
+        # استفاده از sync_to_async برای تبدیل عملیات همزمان به غیرهمزمان
+        recipient = await sync_to_async(User.objects.get)(username=recipient_username)
         message = text_data_json['message']
 
         # Save message to database
-        Message.objects.create(sender=self.user, recipient=recipient, content=message)
+        Message = apps.get_model('my_app', 'Message')
+        await sync_to_async(Message.objects.create)(sender=self.user, recipient=recipient, content=message)
 
         # Send message to recipient
         recipient_room_name = f'user_{recipient.id}'

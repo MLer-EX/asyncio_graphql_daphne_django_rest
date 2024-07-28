@@ -23,6 +23,10 @@
         console.error('Chat socket closed unexpectedly');
     };
 
+    chatSocket.onerror = function(error) {
+        console.error('WebSocket Error: ' + error);
+    };
+
     document.querySelector('#chat-message-submit').onclick = function(e) {
         const recipient = document.querySelector('#recipient').value;
         const messageInputDom = document.querySelector('#chat-message-input');

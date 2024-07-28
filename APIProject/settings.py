@@ -36,9 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'daphne' 
     'django.contrib.staticfiles',
-    "my_app.apps.MyAppConfig",
+    'my_app.apps.MyAppConfig',
     'rest_framework',
     'django_filters',
     'oauth2_provider',
@@ -50,8 +49,32 @@ INSTALLED_APPS = [
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+
     },
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'channels': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+
 
 ASGI_APPLICATION = 'APIProject.asgi.application'
 

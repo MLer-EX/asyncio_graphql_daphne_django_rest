@@ -1,7 +1,5 @@
-# myapp/models.py
 from django.db import models
-from django.contrib.auth.models import User
-
+from django.contrib.auth import get_user_model
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
@@ -12,6 +10,8 @@ class Item(models.Model):
 
 
 class Message(models.Model):
+    User = get_user_model()
+
     sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
     recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
     content = models.TextField()
