@@ -1,15 +1,15 @@
-# my_app/consumers.py
-
-from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+from channels.generic.websocket import AsyncWebsocketConsumer
+from .models import Message
+from django.contrib.auth.models import User
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = 'chat'
+        self.user = self.scope['user']
+        self.room_name = f'user_{self.user.id}'
         self.room_group_name = f'chat_{self.room_name}'
 
-        # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -18,7 +18,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
@@ -26,21 +25,30 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        recipient_username = text_data_json['recipient']
+        recipient = User.objects.get(username=recipient_username)
         message = text_data_json['message']
 
-        # Send message to room group
+        # Save message to database
+        Message.objects.create(sender=self.user, recipient=recipient, content=message)
+
+        # Send message to recipient
+        recipient_room_name = f'user_{recipient.id}'
+        recipient_group_name = f'chat_{recipient_room_name}'
         await self.channel_layer.group_send(
-            self.room_group_name,
+            recipient_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'sender': self.user.username
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
+        sender = event['sender']
 
-        # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'sender': sender
         }))
