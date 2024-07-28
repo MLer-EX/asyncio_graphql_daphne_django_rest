@@ -84,6 +84,6 @@ celerybeat-schedule
 .mypy_cache/
 .dmypy.json
 dmypy.json
-my_app/migrations/
+/my_app/migrations
 # Pyre type checker
 .pyre/
