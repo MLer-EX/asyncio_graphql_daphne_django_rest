@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="">
+<html>
 <head>
     <title>Chat</title>
 </head>
 <body>
 <h1>Chat Room</h1>
 <div id="chat-log"></div>
-<label for="chat-message-input"></label><input id="chat-message-input" type="text" size="100">
+<input id="chat-message-input" type="text" size="100">
 <input id="chat-message-submit" type="button" value="Send">
 
 <script>
@@ -18,7 +18,7 @@
         document.querySelector('#chat-log').innerHTML += ('<div>' + data.message + '</div>');
     };
 
-    chatSocket.onclose = function() {
+    chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
 
@@ -29,7 +29,7 @@
         }
     };
 
-    document.querySelector('#chat-message-submit').onclick = function() {
+    document.querySelector('#chat-message-submit').onclick = function(e) {
         const messageInputDom = document.querySelector('#chat-message-input');
         const message = messageInputDom.value;
         chatSocket.send(JSON.stringify({

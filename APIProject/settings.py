@@ -45,6 +45,12 @@ INSTALLED_APPS = [
     'channels',
 ]
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
 ASGI_APPLICATION = 'APIProject.asgi.application'
 
 MIDDLEWARE = [
