@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'oauth2_provider',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -135,4 +136,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+GRAPHENE = {
+    'SCHEMA': 'my_app.schema.schema'  # schema root directory
 }
